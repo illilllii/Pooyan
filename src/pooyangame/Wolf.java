@@ -28,7 +28,7 @@ public class Wolf extends JLabel {
 	}
 
 	public void moveFall() { // Ç³¼±Å¸°í ¶¥À¸·Î ³»·Á°¨
-		System.out.println(TAG + "moveFall");
+		//System.out.println(TAG + "moveFall");
 
 		if (isDown == false) {
 			new Thread(new Runnable() {
@@ -63,7 +63,7 @@ public class Wolf extends JLabel {
 	}
 
 	public void moveRight() {
-		System.out.println(TAG + "moveRight");
+		//System.out.println(TAG + "moveRight");
 
 		new Thread(new Runnable() {
 			@Override
@@ -97,16 +97,13 @@ public class Wolf extends JLabel {
 	}
 
 	public void moveUP() {
-		System.out.println(TAG + "moveUp");
+		//System.out.println(TAG + "moveUp");
 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (isUp) {
-//					if (y < 405 + y1) {
-//						y1 += 50;
-//						isUp = false;
-//					} 
+
 					if (floor == 1 && y < 400) {
 						isUp = false;
 						break;

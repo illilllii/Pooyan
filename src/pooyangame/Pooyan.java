@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -11,7 +12,8 @@ import javax.swing.JPanel;
 
 public class Pooyan extends JPanel{
 	public Pooyan pooyan = this;
-	private Arrow arrow;
+	//private Arrow arrow;
+	private ArrayList<Arrow> listArrow;
 	private final static String TAG = "Pooyan : ";
 	private Color transparency;
 	
@@ -26,12 +28,13 @@ public class Pooyan extends JPanel{
 	public int x = 486;
 	public int y = 100;
 	
-	public int arrowX = x;
-	public int arrowY = y;
+	public int arrowX = 486;
+	public int arrowY = 100;
 	
+	private int list = 0;
 	
 	private void init() {
-		arrow = new Arrow();
+		//arrow = new Arrow();
 		
 		icElevator = new ImageIcon("images/elevator.png");
 		laElevator = new JLabel();
@@ -44,6 +47,8 @@ public class Pooyan extends JPanel{
 		
 		transparency = new Color(255,0,0,0);
 		jpPlayer = new JPanel();
+		
+		listArrow = new ArrayList<Arrow>();
 		
 		
 	}
@@ -66,15 +71,16 @@ public class Pooyan extends JPanel{
 		laAttackPy.setBounds(0, 20, 50, 50);
 		laAttackPy.setVisible(false);
 		
-		
 		jpPlayer.setLayout(null);
 		jpPlayer.setSize(80, 80);
 		jpPlayer.setOpaque(false);
 		jpPlayer.setBackground(transparency);
 		jpPlayer.setLocation(x, y);
 
-		arrow.setLocation(arrowX,arrowY);
-		arrow.setOpaque(false);
+		
+
+//		arrow.setLocation(arrowX,arrowY);
+//		arrow.setOpaque(false);
 	}
 	
 	private void batch() {
@@ -82,7 +88,6 @@ public class Pooyan extends JPanel{
 		jpPlayer.add(laAttackBow);
 		jpPlayer.add(laAttackPy);
 		add(jpPlayer);
-		add(arrow);
 
 	}
 	
@@ -109,7 +114,7 @@ public class Pooyan extends JPanel{
 							isUp = false;
 						}
 						jpPlayer.setLocation(x,y);
-						arrow.setLocation(x, y);
+						//arrow.setLocation(x, y);
 						try {
 							Thread.sleep(10);
 						} catch (InterruptedException e) {
@@ -139,7 +144,7 @@ public class Pooyan extends JPanel{
 							
 						}
 						jpPlayer.setLocation(x, y);
-						arrow.setLocation(x, y);
+						//arrow.setLocation(x, y);
 						try {
 							Thread.sleep(10);
 						} catch (InterruptedException e) {
@@ -153,28 +158,54 @@ public class Pooyan extends JPanel{
 	
 	public void shoot() {
 		if(isShoot) {
-			laAttackBow.setVisible(false);
-			laAttackPy.setVisible(true);
-			repaint();
-			new Thread(new Runnable() {
+			listArrow.add(new Arrow());
+			
+			for (int i = 0; i < listArrow.size(); i++) {
+				if(listArrow.get(i).isFlag == false) {
+					listArrow.get(i).x = jpPlayer.getLocation().x;
+					listArrow.get(i).y = jpPlayer.getLocation().y;
+
+					arrowX = listArrow.get(i).x;
+					arrowY = listArrow.get(i).y;
+					
+					listArrow.get(i).setLocation(arrowX, arrowY);
+					
+					add(listArrow.get(i));
+
+				}
+				listArrow.get(i).isFlag = true;
 				
+			}
+			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while (true) {
-						arrowX--;
-						if(arrowX<-10) {
-							pooyan.remove(arrow);
-						}
-						arrow.setLocation(arrowX, arrowY);
-						try {
-							Thread.sleep(1);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+						for (int i = 0; i < listArrow.size(); i++) {
+							if(listArrow.get(i).x < 0) {
+								listArrow.get(i).setVisible(false);
+								listArrow.remove(i);
+							} else {
+								listArrow.get(i).x--;
+								listArrow.get(i).setLocation(listArrow.get(i).x, listArrow.get(i).y);
+								try {
+										Thread.sleep(10);
+								} catch (InterruptedException e) {
+										e.printStackTrace();
+								}
+							}
 						}
 					}
 					
 				}
 			}).start();
+			
+			
+			
+			laAttackBow.setVisible(false);
+			laAttackPy.setVisible(true);
+			repaint();
+			
+			
 		} else {
 			laAttackBow.setVisible(true);
 			laAttackPy.setVisible(false);

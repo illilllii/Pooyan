@@ -11,14 +11,15 @@ import javax.swing.JLabel;
 public class PooyanApp extends JFrame implements Initable{
 
 		private PooyanApp pooyanApp = this;
+
 		private static final String TAG = "PooyanApp : ";
-		
 		public static int floor=0;
 		private JLabel laBackground;
 		private Wolf wolf;
 		private Pooyan pooyan; 
+		private boolean isPressed = false;
 		ArrayList<Wolf> wolves;
-
+		
 		public PooyanApp() {
 			init();
 			setting();
@@ -39,6 +40,7 @@ public class PooyanApp extends JFrame implements Initable{
 			wolves = new ArrayList<Wolf>();
 			pooyan = new Pooyan();
 
+			
 			new Thread(new Runnable() {
 				public void run() {
 					for (int i = 0; i < 4; i++) {
@@ -75,7 +77,6 @@ public class PooyanApp extends JFrame implements Initable{
 					for (int i = 0; i < wolves.size(); i++) {
 						wolves.get(i).moveFall();
 						getContentPane().add(wolves.get(i));
-						System.out.println(wolves.size());
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -92,27 +93,37 @@ public class PooyanApp extends JFrame implements Initable{
 			addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
+					
 					if(e.getKeyCode() == KeyEvent.VK_UP) {
 						pooyan.moveUp();
 					} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {			
-						pooyan.moveDown();
-					} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+						pooyan.moveDown();	
+					} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {						
+						isPressed = true;
 						pooyan.isShoot = true;
 						pooyan.shoot();
+						
 					}
-					
-					
 					
 				}
 				@Override
 				public void keyReleased(KeyEvent e) {
+					
 					if(e.getKeyCode() == KeyEvent.VK_UP) {
 						pooyan.isUp = false;
 					} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 						pooyan.isDown = false;
 					} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+						System.out.println("keyReleased");
+						isPressed = false;
 						pooyan.isShoot = false;
 						pooyan.shoot();
+						
+						//if(isPressed) {
+							
+							
+						//}
+						
 					}
 				}
 				
