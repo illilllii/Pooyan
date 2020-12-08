@@ -24,6 +24,7 @@ public class Pooyan extends JPanel{
 	public boolean isUp = false;
 	public boolean isDown = false;
 	public boolean isShoot = false;
+	public boolean isArrow = false;
 	
 	public int x = 486;
 	public int y = 100;
@@ -108,13 +109,11 @@ public class Pooyan extends JPanel{
 					while(isUp) {
 						System.out.println(y);
 						y--;
-						//arrowY--;
 						if(y<100) {	
 							y++;
 							isUp = false;
 						}
 						jpPlayer.setLocation(x,y);
-						//arrow.setLocation(x, y);
 						try {
 							Thread.sleep(10);
 						} catch (InterruptedException e) {
@@ -137,14 +136,12 @@ public class Pooyan extends JPanel{
 					while(isDown) {
 						System.out.println(y);
 						y++;
-						//arrowY++;
 						if(y > 413) {
 							y--;
 							isDown = false;
 							
 						}
 						jpPlayer.setLocation(x, y);
-						//arrow.setLocation(x, y);
 						try {
 							Thread.sleep(10);
 						} catch (InterruptedException e) {
@@ -156,61 +153,63 @@ public class Pooyan extends JPanel{
 		}
 	}
 	
-	public void shoot() {
+	public void shoot() {	
 		if(isShoot) {
-			listArrow.add(new Arrow());
-			
-			for (int i = 0; i < listArrow.size(); i++) {
-				if(listArrow.get(i).isFlag == false) {
-					listArrow.get(i).x = jpPlayer.getLocation().x;
-					listArrow.get(i).y = jpPlayer.getLocation().y;
+			if(isArrow == false) {
+				listArrow.add(new Arrow());
+				isArrow = true;
+				for (int i = 0; i < listArrow.size(); i++) {
+					if(listArrow.get(i).isIn == false) {
+						listArrow.get(i).x = jpPlayer.getLocation().x-60;
+						listArrow.get(i).y = jpPlayer.getLocation().y+50;
 
-					arrowX = listArrow.get(i).x;
-					arrowY = listArrow.get(i).y;
-					
-					listArrow.get(i).setLocation(arrowX, arrowY);
-					
-					add(listArrow.get(i));
+						arrowX = listArrow.get(i).x;
+						arrowY = listArrow.get(i).y;
+						
+						listArrow.get(i).setLocation(arrowX, arrowY);
+						
+						add(listArrow.get(i));
+						
 
+					}
+					listArrow.get(i).isIn = true;
+					
 				}
-				listArrow.get(i).isFlag = true;
-				
-			}
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					while (true) {
-						for (int i = 0; i < listArrow.size(); i++) {
-							if(listArrow.get(i).x < 0) {
-								listArrow.get(i).setVisible(false);
-								listArrow.remove(i);
-							} else {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						while (true) {
+							for (int i = 0; i < listArrow.size(); i++) {
 								listArrow.get(i).x--;
 								listArrow.get(i).setLocation(listArrow.get(i).x, listArrow.get(i).y);
+								if(listArrow.get(i).x<-2) {
+									remove(listArrow.get(i));
+								}
 								try {
-										Thread.sleep(10);
+										Thread.sleep(1);
 								} catch (InterruptedException e) {
 										e.printStackTrace();
-								}
+								}	
 							}
 						}
+						
 					}
-					
-				}
-			}).start();
-			
-			
-			
-			laAttackBow.setVisible(false);
-			laAttackPy.setVisible(true);
-			repaint();
-			
-			
+				}).start();
+				
+				laAttackBow.setVisible(false);
+				laAttackPy.setVisible(true);
+				repaint();
+			} else {
+				laAttackBow.setVisible(true);
+				laAttackPy.setVisible(false);
+				repaint();
+			}
+			 
 		} else {
 			laAttackBow.setVisible(true);
 			laAttackPy.setVisible(false);
+			isArrow = false;
 			repaint();
-			
 		}
 		
 	}
