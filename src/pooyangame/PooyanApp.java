@@ -17,7 +17,6 @@ public class PooyanApp extends JFrame implements Initable{
 		private JLabel laBackground;
 		private Wolf wolf;
 		private Pooyan pooyan; 
-		private boolean isPressed = false;
 		ArrayList<Wolf> wolves;
 		
 		public PooyanApp() {
@@ -41,20 +40,7 @@ public class PooyanApp extends JFrame implements Initable{
 			pooyan = new Pooyan();
 
 			
-			new Thread(new Runnable() {
-				public void run() {
-					for (int i = 0; i < 4; i++) {
-						//wolf = new Wolf();
-						wolves.add(new Wolf());
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					
-				}
-			}).start();
+			
 		}
 
 		@Override
@@ -74,15 +60,17 @@ public class PooyanApp extends JFrame implements Initable{
 			add(pooyan);
 			new Thread(new Runnable() {
 				public void run() {
-					for (int i = 0; i < wolves.size(); i++) {
+					for (int i = 0; i < 4; i++) {
+						wolves.add(new Wolf());
 						wolves.get(i).moveFall();
 						getContentPane().add(wolves.get(i));
 						try {
-							Thread.sleep(1000);
+							Thread.sleep((int)((Math.random()*1000)+500));
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
+					
 				}
 			}).start();
 			
@@ -99,7 +87,6 @@ public class PooyanApp extends JFrame implements Initable{
 					} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {			
 						pooyan.moveDown();	
 					} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {						
-						isPressed = true;
 						pooyan.isShoot = true;
 						pooyan.shoot();
 						
@@ -115,14 +102,8 @@ public class PooyanApp extends JFrame implements Initable{
 						pooyan.isDown = false;
 					} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 						System.out.println("keyReleased");
-						isPressed = false;
 						pooyan.isShoot = false;
 						pooyan.shoot();
-						
-						//if(isPressed) {
-							
-							
-						//}
 						
 					}
 				}
