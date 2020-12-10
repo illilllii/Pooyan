@@ -25,12 +25,16 @@ public class Pooyan extends JPanel {
 	public boolean isDown = false;
 	public boolean isShoot = false;
 	public boolean isArrow = false;
+	public boolean isItem = false;
 	public boolean isMeat = false;
+	
 	public int x = 486;
-	public int y = 100;
+	public int y = 130;
 
 	public int arrowX = 486;
-	public int arrowY = 100;
+	public int arrowY = 130;
+	public int meatX = 0;
+	public int meatY = 0;
 
 	private int list = 0;
 
@@ -84,39 +88,48 @@ public class Pooyan extends JPanel {
 		jpPlayer.setBackground(transparency);
 		jpPlayer.setLocation(x, y);
 
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
+		meat.setLocation(496, 70);
 
-					if (isMeat == false) {
-						meat.setLocation(496, 70);
-						meat.setVisible(true);
+				
+		if (isItem == false) {
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					
+					while (true) {
+						System.out.println("Ω««‡¡ﬂ");
 						if (jpPlayer.getLocation().x == meat.getLocation().x - 10
 								&& jpPlayer.getLocation().y == meat.getLocation().y + 30) {
+							isItem = true;
+							
+							meat.x = jpPlayer.getLocation().x;
+							meat.y = jpPlayer.getLocation().y;
+							meat.setLocation(meat.x, meat.y);
+
+							System.out.println("meat.getLocation.x" + meat.getLocation().x);
 							meat.setVisible(false);
-							isMeat = true;
 							laAttackBow.setVisible(false);
 							laAttackMeatPy.setVisible(true);
+						} 
+						try {
+							if (isItem == false) {
+								meat.setVisible(false);
+								Thread.sleep(800);
+								meat.setVisible(true);
+								Thread.sleep(1000);
+							}
 
-						}
-						System.out.println("Meat");
-						try {
-							Thread.sleep(500);
 						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						meat.setVisible(false);
-						try {
-							Thread.sleep(500);
-						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
-				}
 
-			}
-		}).start();
+				}
+			}).start();
+
+		}
 
 	}
 
@@ -127,7 +140,6 @@ public class Pooyan extends JPanel {
 		jpPlayer.add(laAttackMeatPy);
 		add(jpPlayer);
 		add(meat);
-
 	}
 
 	public Pooyan() {
@@ -191,11 +203,60 @@ public class Pooyan extends JPanel {
 	}
 
 	public void shoot() {
-		if (isShoot) {
-			if (isMeat == false) {
-				if (isArrow == false) {
-					listArrow.add(new Arrow());
+		if (isShoot == true) {	
+			if(isItem == true) {
+				
+				if(isMeat == false) {	
+					isMeat = true;
+					meat.x = jpPlayer.getLocation().x;
+					meat.y = jpPlayer.getLocation().y;
+					
+					meatX = meat.x;
+					meatY = meat.y;
+					
+					meat.setLocation(meatX, meatY);
+					meat.setVisible(true);
+					laAttackMeatPy.setVisible(false);
+					
+					new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							
+							while (true) {
+								meatX--;
+								
+								meat.setLocation(meatX, meatY);
+								if(meatX<50) {
+									//meat.y++;
+									meat.setLocation(496, 70);
+									isItem = false;
+									//repaint();
+									
+								}
+								try {
+									Thread.sleep(5);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+							
+						}
+					}).start();
+				}
+				
+			}
+			
+			if (isArrow == false) {
+				listArrow.add(new Arrow());
+				if(isItem == true) {
+					isArrow = false;
+					
+				} else {
+					
 					isArrow = true;
+				}
+				if(isArrow == true) {
 					for (int i = 0; i < listArrow.size(); i++) {
 						if (listArrow.get(i).isIn == false) {
 							listArrow.get(i).x = jpPlayer.getLocation().x - 60;
@@ -235,28 +296,24 @@ public class Pooyan extends JPanel {
 					laAttackBow.setVisible(false);
 					laAttackPy.setVisible(true);
 					repaint();
-
-				} else {
-
-					laAttackBow.setVisible(true);
-					laAttackPy.setVisible(false);
-					repaint();
-
 				}
+				
+
+			} else {
+
+				laAttackBow.setVisible(true);
+				laAttackPy.setVisible(false);
+				repaint();
+
 			}
 
 		} else {
-			if (isMeat == false) {
-				laAttackBow.setVisible(true);
-				laAttackPy.setVisible(false);
-				isArrow = false;
-				repaint();
-			} else {
-				laAttackBow.setVisible(true);
-				laAttackMeatPy.setVisible(false);
-				isMeat = false;
-				repaint();
-			}
+
+			laAttackBow.setVisible(true);
+			laAttackPy.setVisible(false);
+			isArrow = false;
+			repaint();
+
 		}
 
 	}

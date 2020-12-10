@@ -103,6 +103,7 @@ public class PooyanApp extends JFrame implements Initable{
 					} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 						System.out.println("keyReleased");
 						pooyan.isShoot = false;
+						//pooyan.isItem = false;
 						pooyan.shoot();
 						
 					}
