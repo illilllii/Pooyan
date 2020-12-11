@@ -9,19 +9,17 @@ public class Wolf extends JLabel {
 	private static final long serialVersionUID = 1L;
 	public Wolf wolf = this;
 	private final static String TAG = "Wolf : ";
-
 	private PooyanApp pooyanApp;
-	private int floor = 0;
+	public int floor = 0;
 	private ImageIcon iconWolfM4, iconWolfM5, iconWalkWolfR, iconAttackStayWolf, iconAttackStayWolfR, iconAttackWolf1, iconAttackWolf2;
-	private int x = 50;
-	private int y = 50;
+	public int x = 50;
+	public int y = 50;
 	public int count = 0;
 	public boolean isDown = false;
 	public boolean isRight = false;
 	public boolean isRightGround = false;
 	public boolean isUp = false;
 	public boolean isAttack = false;
-
 	public Random random = new Random();
 	
 	public Wolf() {
@@ -32,7 +30,6 @@ public class Wolf extends JLabel {
 		iconAttackStayWolfR = new ImageIcon("images/attackStayWolfR.png");
 		iconAttackWolf1 = new ImageIcon("images/attackWolf1.png");
 		iconAttackWolf2 = new ImageIcon("images/attackWolf2.png");
-		
 		setIcon(iconWolfM4);
 		setSize(130, 130);
 		setLocation(x, y);
@@ -51,6 +48,8 @@ public class Wolf extends JLabel {
 						if (y > 490) {
 							isDown = false;
 							isRightGround = true;
+							pooyanApp.floor = pooyanApp.floor + 1;
+							floor = pooyanApp.floor;
 							wolf.moveRightGround();
 							setIcon(iconWalkWolfR);
 							break;
@@ -80,31 +79,42 @@ public class Wolf extends JLabel {
 			@Override
 			public void run() {
 				while (isRightGround) {
-					if (x > 540) {
+					if (x > 540 && floor <= 4) {
 						isRightGround = false;
 						isUp = true;
-						pooyanApp.floor = pooyanApp.floor + 1;
-						floor = pooyanApp.floor;
+						
 						wolf.moveUP();
 						setIcon(iconAttackStayWolf);
 						break;
 					} 
+					if(x > 540 && floor >= 5) {
+						x++;
+						setLocation(x, y);
+						
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 					x++;
-					setLocation(x, y);
-
+					setLocation(x,y);
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
-				
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}).start();
 	}
 	
 	public void moveUP() {
-		//System.out.println(TAG + "moveUp");
 
 		new Thread(new Runnable() {
 			@Override
@@ -128,12 +138,14 @@ public class Wolf extends JLabel {
 						isAttack = true;
 						wolf.attack();
 						break;
+						
 					}
 					if (floor == 4 && y < 150) {
 						isUp = false;
 						isAttack = true;
 						wolf.attack();
 						break;
+						
 					}
 					y--;
 					setLocation(x, y);
@@ -153,11 +165,11 @@ public class Wolf extends JLabel {
 			public void run() {
 				int num = random.nextInt(10000);
 				while (isAttack) {
-					System.out.println(num);
 					count++;
 					if (count == num) {
 						setIcon(iconAttackWolf1);
-						setLocation(510, getY());
+						x = 510;
+						setLocation(x, getY());
 						try {
 							Thread.sleep( random.nextInt(2000)+500);
 						} catch (InterruptedException e) {
@@ -173,6 +185,7 @@ public class Wolf extends JLabel {
 						setIcon(iconAttackWolf1);
 						setIcon(iconAttackStayWolfR);
 						
+						x = 540;
 						setLocation(x, getY());
 						try {
 							Thread.sleep(800);
