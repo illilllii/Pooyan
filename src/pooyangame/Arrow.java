@@ -38,16 +38,16 @@ public class Arrow extends JLabel{
 			public void run() {
 				while(isKill) {
 					try {
-						System.out.println("킬 쓰레드 진행중"); // 이거 지우면 죽이는거 작동이 잘 안됨. 확인필요
+						//System.out.println("킬 쓰레드 진행중"); // 이거 지우면 죽이는거 작동이 잘 안됨. 확인필요
 						for (int i = 0; i < pooyanApp.wolves.size(); i++) {
 							if(x==pooyanApp.wolves.get(i).x+40) {
 								if(y>=pooyanApp.wolves.get(i).y+10 && y<=pooyanApp.wolves.get(i).y+60) {
 									System.out.println(TAG+"킬");
 									pooyanApp.wolves.get(i).wolfStatus = false;
 									pooyan.remove(arrow);
-									//pooyanApp.remove(pooyanApp.wolves.get(i));
-									//pooyanApp.repaint();
-									//pooyanApp.wolves.remove(pooyanApp.wolves.get(i));
+//									pooyanApp.remove(pooyanApp.wolves.get(i));
+//									pooyanApp.repaint();
+									pooyanApp.wolves.remove(pooyanApp.wolves.get(i));
 									pooyanApp.count--;
 									System.out.println(pooyanApp.count);
 									pooyanApp.remainWolf --;
@@ -58,6 +58,7 @@ public class Arrow extends JLabel{
 								}
 							}
 						}
+						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

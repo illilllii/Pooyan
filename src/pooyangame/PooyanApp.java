@@ -24,7 +24,7 @@ public class PooyanApp extends JFrame implements Initable {
 	ArrayList<Wolf> wolves;
 
 	public JLabel laRemainWolf;
-	public int remainWolf = 34;
+	public int remainWolf = 32;
 
 	public int randTime; // 늑대 생성 간격 랜덤 시간
 	public int randWolf; // 늑대 생성 수 랜덤
@@ -46,6 +46,7 @@ public class PooyanApp extends JFrame implements Initable {
 	public void init() {
 		laBackground = new JLabel(new ImageIcon("images/background.png"));
 		wolves = new ArrayList<Wolf>();
+		//wolf = new Wolf(pooyanApp, pooyan);
 		pooyan = new Pooyan(pooyanApp, wolf);
 		laRemainWolf = new JLabel();
 
@@ -71,6 +72,7 @@ public class PooyanApp extends JFrame implements Initable {
 	public void batch() {
 		add(pooyan);
 		wolfAdd(); // 늑대 생성
+		//wolfDie();
 		getContentPane().add(laRemainWolf);
 	}
 
@@ -115,10 +117,10 @@ public class PooyanApp extends JFrame implements Initable {
 	public void wolfAdd() {
 		new Thread(new Runnable() {
 			public void run() {
-				while (true) {
+				while (remainWolf > 0) {
 					try {
 						randWolf = (int) (Math.random() * 4) + 1;
-							System.out.println(randWolf);
+						System.out.println(randWolf);
 						for (int i = 0; i < randWolf; i++) {
 							wolves.add(new Wolf(pooyanApp, pooyan));
 							getContentPane().add(wolves.get(count));
@@ -137,19 +139,19 @@ public class PooyanApp extends JFrame implements Initable {
 		}).start();
 	}
 
-//	public void wolfDie() {
-//		new Thread(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				while(true) {
-//					for (int i = 0; i < wolves.size(); i++) {
-//						if(wolves.get(i).isDie == true) wolves.remove(pooyanApp.wolves.get(i));
-//					}
-//				}
-//				
-//			}
-//		}).start();
-//	}
+	public void wolfDie() {
+		new Thread(new Runnable() {
 
+			@Override
+			public void run() {
+				while (true) {
+					//System.out.println("dfasf");
+					System.out.println(wolves.size());
+
+				}
+
+
+			}
+		}).start();
+	}
 }

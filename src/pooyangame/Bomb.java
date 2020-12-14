@@ -12,7 +12,7 @@ public class Bomb extends JLabel{
 	public Bomb() {
 		icBomb = new ImageIcon("images/bomb.png");
 		setIcon(icBomb);
-		setSize(80,80);
+		setSize(20,20);
 		setLocation(0,0);
 	}
 }
