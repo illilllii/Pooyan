@@ -253,7 +253,8 @@ class Pooyan extends JPanel {
 								break;
 							} else {
 								if (count >= 100) {
-									//isDie = true;
+									isDie = true;
+									
 									pooyanApp.reset();
 									isCollisionWolf = false;
 									

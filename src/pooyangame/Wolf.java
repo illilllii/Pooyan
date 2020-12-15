@@ -318,6 +318,7 @@ public class Wolf extends JLabel {
 			@Override
 			public void run() {
 				laScoreWolf.setLocation(wolf.x, wolf.y);
+				
 				while (true) {
 					try {
 						timer++;
@@ -363,7 +364,7 @@ public class Wolf extends JLabel {
 				setIcon(iconAttackStayWolfR);
 				while (isAttack) {
 					try {
-						
+
 						System.out.println(TAG + "공격");
 						Thread.sleep(5000); // 5초마다 공격
 						setIcon(iconAttackWolf1);
@@ -371,13 +372,10 @@ public class Wolf extends JLabel {
 						setLocation(x, y);
 						if (x <= pooyan.x + 50) {
 							if (y + 30 >= pooyan.y && y + 30 <= pooyan.y + 50) {
-								pooyan.die();
 								wolfStatus = false;
-//								if(pooyan.isDie==true) {
-//									pooyanApp.reset();
-//								}
-								// pooyanApp.reset();
-								// break;
+								pooyan.die();
+								
+
 							}
 						}
 						Thread.sleep(800); // 공격 모션 딜레이

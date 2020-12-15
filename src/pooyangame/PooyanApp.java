@@ -188,7 +188,7 @@ public class PooyanApp extends JFrame implements Initable{
 					while (true) {
 						//if(isReset) break;
 						try {
-							isReset = false;
+							//isReset = false;
 							randWolf = (int) (Math.random() * 4) + 1;
 							System.out.println(randWolf);
 							for (int i = 0; i < randWolf; i++) {
@@ -210,18 +210,30 @@ public class PooyanApp extends JFrame implements Initable{
 		}
 		// 플레이어가 죽었을때 리셋
 		public void reset() {
+			
+			//viewPanel.
 			isReset = true;
-			wolves.clear();
+			//wolves.clear();
+			wolves.removeAll(wolves);
 			
 			count=0;
 			floor=0;
-			viewPanel.removeAll();
-			
+			//removeAll();
+			for (int i = 0; i < wolves.size(); i++) {
+				remove(wolves.get(i));
+			}
+			//viewPanel.removeAll();
+			//viewPanel.removeAll();
+			//viewPanel.updateUI();
+			//viewPanel.revalidate();
+			//viewPanel.repaint();
 			viewPanel.add(pooyan);
 			viewPanel.add(laRemainWolf);
 			viewPanel.add(laLife);
 			viewPanel.add(laScore);
 			
+			
+			revalidate();
 			repaint();
 			//wolves.removeAll();
 			
