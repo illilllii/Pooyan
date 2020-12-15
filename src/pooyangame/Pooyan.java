@@ -41,11 +41,12 @@ class Pooyan extends JPanel {
 	public int meatX = 0;
 	public int meatY = 0;
 
-	public int g = 1 ; // 중력가속도
+	public int g = 1; // 중력가속도
 	public int meatVx = -15; // meat x축 초기 속도
 	public int meatVy = 0; // meat y축 초기 속도
 	private int list = 0;
 
+	private int count = 0;
 	public int score = 0;
 
 	private PooyanApp pooyanApp;
@@ -95,7 +96,6 @@ class Pooyan extends JPanel {
 		// wolf = new Wolf(pooyanApp, pooyan);
 
 	}
-	
 
 	private void setting() {
 
@@ -148,7 +148,7 @@ class Pooyan extends JPanel {
 				public void run() {
 
 					while (true) {
-						System.out.println(TAG+"meat 장착 쓰레드");
+						System.out.println(TAG + "meat 장착 쓰레드");
 						if (jpPlayer.getLocation().x == meat.getLocation().x - 10
 								&& jpPlayer.getLocation().y == meat.getLocation().y + 30) {
 							isItem = true;
@@ -195,14 +195,17 @@ class Pooyan extends JPanel {
 		jpDie.add(laDiePy);
 		jpDie.add(laFallingPy);
 	}
+
 	public void reset() {
 		laAttackBow.setVisible(true);
 		x = 486;
 		y = 130;
+		count = 0;
 		jpPlayer.setLocation(x, y);
-		
-		//jpPlayer.setLocation(x, y);
+		jpDie.setLocation(x, y);
+		laDiePy.setVisible(false);
 	}
+
 	public void die() {
 		if (isCollisionWolf == false) {
 			new Thread(new Runnable() {
@@ -210,29 +213,30 @@ class Pooyan extends JPanel {
 				@Override
 				public void run() {
 					isCollisionWolf = true;
-					if (laAttackBow.isVisible())
-						laAttackBow.setVisible(false);
-					else if (laAttackMeatPy.isVisible())
-						laAttackMeatPy.setVisible(false);
-					else if (laAttackPy.isVisible())
-						laAttackPy.setVisible(false);
+					laAttackBow.setVisible(false);
+					laAttackMeatPy.setVisible(false);
+					laAttackPy.setVisible(false);
 					laFallingPy.setVisible(true);
 					dieX = jpPlayer.getLocation().x;
 					dieY = jpPlayer.getLocation().y;
 					while (isCollisionWolf == true) {
-
 						dieX--;
 						dieY++;
 						jpDie.setLocation(dieX, dieY);
 						if (dieY > 510) {
 							laFallingPy.setVisible(false);
 							laDiePy.setVisible(true);
-							System.out.println("dieY: "+dieY);
-							isCollisionWolf = false;
+							dieY--;
+							dieX++;
+							count++;
 							
-							pooyanApp.reset();
-							break;
-						} 
+							if (count >= 100) {
+								pooyanApp.reset();
+								isCollisionWolf = false;
+								break;
+							}
+
+						}
 
 						try {
 							Thread.sleep(5);
@@ -330,25 +334,25 @@ class Pooyan extends JPanel {
 						public void run() {
 
 							while (true) {
-								if(meatX>450) {
+								if (meatX > 450) {
 									meatX = meatX + meatVx;
 								} else {
-									meatVy= meatVy+g; // 중력가속도에 의해 meatVy 점점 증가
-									meatX = meatX + meatVx;  
-									meatY = meatY + meatVy; 
+									meatVy = meatVy + g; // 중력가속도에 의해 meatVy 점점 증가
+									meatX = meatX + meatVx;
+									meatY = meatY + meatVy;
 								}
 								meat.isKill = true;
 								meat.kill();
 								meat.setLocation(meatX, meatY);
-								if (meatY > 490 || meatX<0) {
+								if (meatY > 490 || meatX < 0) {
 									// meat.y++;
-									meatVy=0;
+									meatVy = 0;
 									meatX = 496;
 									meatY = 70;
 									meat.setLocation(meatX, meatY);
 									isItem = false;
 									isMeat = false;
-									meat.isKill=false;
+									meat.isKill = false;
 									break;
 									// repaint();
 
@@ -364,8 +368,7 @@ class Pooyan extends JPanel {
 					}).start();
 				}
 
-			}
-			else if (isArrow == false) {
+			} else if (isArrow == false) {
 //				listArrow.add(new Arrow(pooyanApp, wolf, pooyan));
 				Arrow arrow = new Arrow(pooyanApp, wolf, pooyan);
 				if (isItem == true) {
@@ -431,30 +434,29 @@ class Pooyan extends JPanel {
 						@Override
 						public void run() {
 							while (true) {
-								
-									arrow.x--;
-									arrow.setLocation(arrow.x, arrow.y);
-									
-									if(arrow.isFall == true) {
-										break;
-									}
-									if (arrow.x < -2) {
-										remove(arrow);
-										arrow.isKill = false;
-										break;
-									}
-									
-									try {
-										Thread.sleep(1);
-									} catch (InterruptedException e) {
-										e.printStackTrace();
-									}
+
+								arrow.x--;
+								arrow.setLocation(arrow.x, arrow.y);
+
+								if (arrow.isFall == true) {
+									break;
+								}
+								if (arrow.x < -2) {
+									remove(arrow);
+									arrow.isKill = false;
+									break;
+								}
+
+								try {
+									Thread.sleep(1);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
 								}
 							}
+						}
 
 					}).start();
 
-					
 					laAttackBow.setVisible(false);
 					laAttackPy.setVisible(true);
 					repaint();
@@ -478,7 +480,6 @@ class Pooyan extends JPanel {
 		}
 
 	}
-
 
 	public void AttackBow() {
 
