@@ -19,12 +19,5 @@ public class Bomb extends JLabel{
 		setLocation(0,0);
 	}
 	
-	
-	
-		
-	
-	/*
-	 * if(pooyan.x == wolf.bomb.x
-	 * 
-	 * */
+
 }

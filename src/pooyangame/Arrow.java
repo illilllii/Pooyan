@@ -6,9 +6,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 
-
-
-
 public class Arrow extends JLabel{
 	private Arrow arrow = this;
 	private static final String TAG = "Arrow : ";
@@ -50,10 +47,13 @@ public class Arrow extends JLabel{
 							if(x==pooyanApp.wolves.get(i).x+40) {
 								if(y>=pooyanApp.wolves.get(i).y+10 && y<=pooyanApp.wolves.get(i).y+50) {
 									System.out.println(TAG+"ų");
+									pooyan.score+=100;
+									pooyanApp.score();
+									System.out.println(TAG+pooyan.score);
 									isKill = false;
 									pooyanApp.wolves.get(i).wolfStatus = false;
 									pooyan.remove(arrow);
-									pooyan.score = pooyan.score+200;
+									//pooyan.score = pooyan.score+200;
 									pooyanApp.wolves.get(i).attackedFall();
 									break;
 								}  else if(y>pooyanApp.wolves.get(i).y+50 && y<=pooyanApp.wolves.get(i).y+100) {
@@ -67,7 +67,7 @@ public class Arrow extends JLabel{
 										Thread.sleep(1);
 										if(y>490) {
 											pooyan.remove(arrow);
-											pooyanApp.repaint();
+											pooyanApp.viewPanel.repaint();
 											isFall=false;
 											isKill=false;
 											break;
