@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 
 class Pooyan extends JPanel {
 	public Pooyan pooyan = this;
-	public ArrayList<Arrow> listArrow;
+//	public ArrayList<Arrow> listArrow;
 	private Meat meat;
 	private final static String TAG = "Pooyan : ";
 	private Color transparency;
@@ -33,7 +33,7 @@ class Pooyan extends JPanel {
 	public boolean isAttackBomb = false;
 	public boolean isCollisionWolf = false;
 	public boolean isDie = false;
-	public boolean isDrawMeat = false;
+	//public boolean isDrawMeat = false;
 
 	public int x = 486;
 	public int y = 130;
@@ -94,7 +94,7 @@ class Pooyan extends JPanel {
 		transparency = new Color(255, 0, 0, 0);
 		jpDie = new JPanel();
 
-		listArrow = new ArrayList<Arrow>();
+		//listArrow = new ArrayList<Arrow>();
 		meat = new Meat(pooyanApp, wolf, pooyan);
 
 		laLife = new JLabel();
@@ -145,6 +145,7 @@ class Pooyan extends JPanel {
 		jpDie.setLocation(x, y);
 
 		meat.setLocation(496, 70);
+		
 		laLife.setText("❤ ❤");
 		laLife.setFont(new Font("Serif", Font.BOLD, 30));
 		laLife.setForeground(Color.WHITE);
@@ -158,13 +159,16 @@ class Pooyan extends JPanel {
 				@Override
 				public void run() {
 
-					while (true) {
+					while (pooyanApp.gameStatus) {
+						//if(pooyanApp.isEnd) break;
 						System.out.println(TAG + "meat 장착 쓰레드");
 						//if(pooyanApp.isReset) break;
 						if (jpPlayer.getLocation().x == meat.getLocation().x - 10
 								&& jpPlayer.getLocation().y == meat.getLocation().y + 30) {
 							isItem = true;
-
+							score = score + 200;
+							meat.stack = 0;
+							pooyanApp.laScore.setText("" + pooyan.score);
 							meat.x = jpPlayer.getLocation().x;
 							meat.y = jpPlayer.getLocation().y;
 							meat.setLocation(meat.x, meat.y);
@@ -217,7 +221,7 @@ class Pooyan extends JPanel {
 		jpPlayer.setLocation(x, y);
 		jpDie.setLocation(x, y);
 		laDiePy.setVisible(false);
-		isDie = false;
+		//isDie = false;
 	}
 
 	public void die() {
@@ -235,7 +239,7 @@ class Pooyan extends JPanel {
 					dieY = jpPlayer.getLocation().y;
 					life--;
 					while (isCollisionWolf == true) {
-						isDie = true;
+						//isDie = true;
 						dieX--;
 						dieY++;
 						jpDie.setLocation(dieX, dieY);
@@ -247,16 +251,19 @@ class Pooyan extends JPanel {
 							dieX++;
 							count++;
 							if(life==0) {
-								isDie = true;
+								//isDie = true;
 								pooyanApp.reset();
 								isCollisionWolf = false;
 								break;
 							} else {
 								if (count >= 100) {
-									isDie = true;
+									//isDie = true;
 									
 									pooyanApp.reset();
+									//reset();
 									isCollisionWolf = false;
+									if(life<=0) pooyanApp.gameEnd();
+									
 									
 									//System.out.println("life: "+life);
 									break;
@@ -288,14 +295,10 @@ class Pooyan extends JPanel {
 				public void run() {
 					isUp = true;
 					while (isUp) {
+						//if(pooyanApp.isEnd) break;
 						y--;
 						if (y < 100) {
-							if (meat.y == 70) {
-								isItem = false;
-								isMeat = true;
-								laAttackBow.setVisible(false);
-								laAttackMeatPy.setVisible(true);
-							}
+//							
 							y++;
 							isUp = false;
 						}
@@ -320,6 +323,7 @@ class Pooyan extends JPanel {
 				public void run() {
 					isDown = true;
 					while (isDown) {
+						//if(pooyanApp.isEnd) break;
 //						System.out.println(y);
 						y++;
 						if (y > 413) {
@@ -362,7 +366,7 @@ class Pooyan extends JPanel {
 							public void run() {
 
 								while (true) {
-									if (meatX > 450) {
+									if (meatX > 400) {
 										meatX = meatX + meatVx;
 									} else {
 										meatVy = meatVy + g; // 중력가속도에 의해 meatVy 점점 증가
@@ -462,7 +466,7 @@ class Pooyan extends JPanel {
 							@Override
 							public void run() {
 								while (true) {
-
+									//arrow.kill();
 									arrow.x--;
 									arrow.setLocation(arrow.x, arrow.y);
 
@@ -511,9 +515,6 @@ class Pooyan extends JPanel {
 
 	}
 
-	public void AttackBow() {
-
-	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
