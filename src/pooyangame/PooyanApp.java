@@ -116,7 +116,7 @@ public class PooyanApp extends JFrame implements Initable {
 		laScore.setForeground(Color.WHITE);
 
 		laGameOver.setText("GAME OVER");
-		laGameOver.setSize(200, 30);
+		laGameOver.setSize(200, 100);
 		laGameOver.setLocation(200, 100);
 		laGameOver.setFont(new Font("Serif", Font.BOLD, 100));
 		laGameOver.setForeground(Color.WHITE);
@@ -224,26 +224,30 @@ public class PooyanApp extends JFrame implements Initable {
 			wolves.get(i).wolfStatus = false;
 		}
 		wolves.clear();
-		repaint();
+		//repaint();
 		count = 0;
 		floor = 0;
-		pooyan.reset();
+		//pooyan.reset();
 		
-//		pooyan.x = 486;
-//		pooyan.y = 130;
-//		pooyan.jpPlayer.setLocation(pooyan.x, pooyan.y);
-
+		pooyan.x = 486;
+		pooyan.y = 130;
+		pooyan.count = 0;
+		pooyan.jpPlayer.setLocation(pooyan.x, pooyan.y);
+		repaint();
+		
 		if (pooyan.life == 1) {
 			laLife.setText("❤");
+			repaint();
+			System.out.println(TAG+"pooyan.life"+pooyan.life);
 
 		} else if (pooyan.life == 0) {
-			//isEnd = true;
-			
-			//remove(pooyan.jpPlayer);
-			// remove(pooyan);
+			remove(pooyan.jpPlayer);
+			//remove(pooyan);
 			laLife.setText("");
+			//revalidate();
 			System.out.println(TAG+"pooyan.life"+pooyan.life);
-			//repaint();
+			//gameEnd();
+			repaint();
 
 		}
 

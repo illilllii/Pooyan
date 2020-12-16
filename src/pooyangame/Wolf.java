@@ -119,6 +119,11 @@ public class Wolf extends JLabel {
 								isBomb = false;
 							}
 
+							if (wolfStatus == false) {
+								pooyanApp.remove(bomb);
+								//repaint();
+								break;
+							}
 							bombVy = bombVy + g;
 							bombX = bombX + bombVx;
 							bombY = bombY + bombVy;
@@ -129,8 +134,10 @@ public class Wolf extends JLabel {
 								System.out.println(TAG+"bombX: "+bombX);
 								if(bombY-50<=pooyan.y && bombY+50>=pooyan.y) {
 									pooyanApp.remove(bomb);
-									repaint();
+									
 									pooyan.die();
+									repaint();
+									//pooyanApp.gameEnd();
 									break;
 								} else {
 									if(bombX >= 516) {
@@ -391,7 +398,7 @@ public class Wolf extends JLabel {
 						if (x <= pooyan.x + 50) {
 							if (y + 30 >= pooyan.y && y + 30 <= pooyan.y + 50) {
 								//pooyanApp.reset();
-								pooyan.life = pooyan.life - 1;
+								//pooyan.life = pooyan.life - 1;
 								pooyan.die();
 //								if(pooyan.life<0) {
 //									

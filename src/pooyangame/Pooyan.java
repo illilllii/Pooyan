@@ -49,7 +49,7 @@ class Pooyan extends JPanel {
 	public int meatVy = 0; // meat y축 초기 속도
 	private int list = 0;
 
-	private int count = 0;
+	public int count = 0;
 	public int score = 0;
 	public int life = 2;
 	
@@ -254,15 +254,15 @@ class Pooyan extends JPanel {
 								//isDie = true;
 								pooyanApp.reset();
 								isCollisionWolf = false;
+								pooyanApp.gameEnd();
 								break;
 							} else {
 								if (count >= 100) {
-									//isDie = true;
-									
 									pooyanApp.reset();
-									//reset();
+									reset();
+									
 									isCollisionWolf = false;
-									if(life<=0) pooyanApp.gameEnd();
+									
 									
 									
 									//System.out.println("life: "+life);
